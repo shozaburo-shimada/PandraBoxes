@@ -1,29 +1,29 @@
 #include <Adafruit_NeoPixel.h>
 #include <Servo.h>
+#include "Ultrasonic.h" //https://github.com/Seeed-Studio/Grove_Ultrasonic_Ranger/
 
-#define PIN_MAGNET_SIG  4
 #define PIN_SERVO       5
 #define PIN_LEDSTRIP    6
+#define PIN_ULTRASONIC 7
 
 #define NUM_LEDS        29
 #define SPEED_LED       50 //ms
-#define ANGLE_LOCK      60 //degree
-#define ANGLE_UNLOCK    25 //degree
+#define ANGLE_LOCK      120 //degree
+#define ANGLE_UNLOCK    0 //degree
 
+Ultrasonic ultrasonic(PIN_ULTRASONIC);
 Adafruit_NeoPixel pixels(NUM_LEDS, PIN_LEDSTRIP, NEO_GRB + NEO_KHZ800);
 Servo servo;
 
-int val = 0;
-int pre_val = 0;
 int counter = 0;
 boolean onLock = true;
 boolean opening = false;
+boolean onDetect = false;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  Serial.println("Hello Magnet Sensor");
-  //pinMode(PIN_MAGNET_SIG, INPUT);
+  Serial.println("Hello Ultrasonic Sensor");
   servo.attach(PIN_SERVO);
   servo.write(ANGLE_LOCK);
   
@@ -32,14 +32,16 @@ void setup() {
 
 }
 
-
+long val = 100;
+long preval = 100;
 
 void loop() {
-  
-  pre_val = val;
-  val = digitalRead(PIN_MAGNET_SIG);
-  
-  if(val == 1 && pre_val == 0){
+  preval = val;
+  val = ultrasonic.MeasureInCentimeters(); // two measurements should keep an interval
+  Serial.print(val);//0~400cm
+  Serial.println(" cm"); 
+
+  if(val < 10 && preval >= 10){
     if(onLock == true){
       //Unlock
       Serial.println("unLock");
@@ -81,6 +83,7 @@ void loop() {
     }else{
       Serial.println("Servo LOCK");     
       servo.write(ANGLE_LOCK);
+      //delay(500);
     }
     opening = false;
       
