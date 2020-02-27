@@ -8,7 +8,7 @@
 #define NUM_LEDS        29
 #define SPEED_LED       50 //ms
 #define ANGLE_LOCK      60 //degree
-#define ANGLE_UNLOCK    25 //degree
+#define ANGLE_UNLOCK    0 //degree
 
 Adafruit_NeoPixel pixels(NUM_LEDS, PIN_LEDSTRIP, NEO_GRB + NEO_KHZ800);
 Servo servo;
