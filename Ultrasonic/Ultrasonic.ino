@@ -18,7 +18,7 @@ Servo servo;
 int counter = 0;
 boolean onLock = true;
 boolean opening = false;
-boolean onDetect = false;
+//boolean onDetect = false;
 
 void setup() {
   // put your setup code here, to run once:

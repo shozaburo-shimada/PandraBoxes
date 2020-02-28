@@ -177,6 +177,7 @@ void check_seikai(){
     //Reset parameter
     reset_rotate();
     onLock = true;
+    opening = true;
   }
 
 }
